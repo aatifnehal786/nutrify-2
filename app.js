@@ -27,7 +27,7 @@ app.use(cors())
 
 const allowedOrigins = [
   "http://localhost:5173", // Development
-  "https://nutrify-2-2.onrender.com", // Production
+  "https://nutrify-2-3.onrender.com", // Production
 ];
 
 app.use(
