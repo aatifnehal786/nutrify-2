@@ -120,7 +120,7 @@ app.post("/forgot-password", async (req, res) => {
         await user.save();
 
         // Send email with reset link
-        const resetLink = `${process.env.RESET_LINK}/${token}`;
+        const resetLink = `https://nutrify-2-1.onrender.com/reset-password/${token}`;
         const receiver = {
             from: process.env.MY_GMAIL,
             to: email,
