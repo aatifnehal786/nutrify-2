@@ -25,8 +25,6 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-const cors = require("cors");
-
 const allowedOrigins = [
   "http://localhost:5173", // Development
   "https://nutrify-2-2.onrender.com", // Production
