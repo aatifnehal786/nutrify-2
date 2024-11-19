@@ -25,6 +25,22 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
+const cors = require("cors");
+
+const allowedOrigins = [
+  "http://localhost:5173", // Development
+  "https://nutrify-2-2.onrender.com", // Production
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+
+
 
 
 app.post("/register",(req,res)=>{
