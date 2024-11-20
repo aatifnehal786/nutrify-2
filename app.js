@@ -242,23 +242,21 @@ app.post("/track",verifiedToken,async (req,res)=>{
 })
 
 // endpoint to fetch all foods eaten by a single person
-app.get("/track/:userid/:date", verifiedToken, async (req, res) => {
-  console.log("Track API called:", req.params); // Check incoming parameters
-  const { userid, date } = req.params;
-  let formattedDate = new Date(date);
+app.get("/track/:userid/:date",verifiedToken,async (req,res)=>{
+    let userid = req.params.userid;
+    let date = new Date(req.params.date)
+    let strDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()
+    console.log(strDate)
+    try{
 
-  try {
-    const foods = await trackingModel.find({
-      user: userid,
-      eatendate: formattedDate,
-    }).populate("users").populate("foods");
+        let foods = await trackingModel.find({user:userid,eatendate:strDate}).populate('user').populate('food')
+        res.send(foods)
 
-    res.status(200).send(foods); // Ensure JSON is returned
-  } catch (err) {
-    console.error(err); // Log errors
-    res.status(500).send({ message: "Server error" }); // Return JSON error
-  }
-});
+    }
+    catch(err){
+        res.send({message:"Some problem"})
+    }
+})
 
 
 
