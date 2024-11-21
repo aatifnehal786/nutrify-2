@@ -25,20 +25,6 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-const allowedOrigins = [
-  "http://localhost:5173", // Development
-  "https://nutrify-2-3.onrender.com", // Production
-];
-
-app.use(
-  cors({
-    origin: allowedOrigins,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
-
-
 
 
 app.post("/register",(req,res)=>{
@@ -134,7 +120,7 @@ app.post("/forgot-password", async (req, res) => {
         await user.save();
 
         // Send email with reset link
-        const resetLink = `https://nutrify-2-2.onrender.com/reset-password/${token}`;
+        const resetLink = `${process.env.RESET_LINK}/${token}`;
         const receiver = {
             from: process.env.MY_GMAIL,
             to: email,
@@ -229,7 +215,7 @@ app.post("/track",verifiedToken,async (req,res)=>{
     try{
         let data = await trackingModel.create(trackData)
         console.log(data)
-        res.status(201).send({data,message:"Food added"})
+        res.status(201).send({message:"Food added"})
     }
     catch(err){
         console.log(err)
@@ -250,6 +236,7 @@ app.get("/track/:userid/:date",verifiedToken,async (req,res)=>{
     try{
 
         let foods = await trackingModel.find({user:userid,eatendate:strDate}).populate('user').populate('food')
+        console.log(foods)
         res.send(foods)
 
     }
@@ -258,16 +245,14 @@ app.get("/track/:userid/:date",verifiedToken,async (req,res)=>{
     }
 })
 
-
-
 const path = require("path");
 
 // Serve React static files
-app.use(express.static(path.join(__dirname, "dist")));
+app.use(express.static("./"));
 
-// Handle fallback routes for SPA
+// Fallback route to handle frontend paths
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));
+    res.sendFile("./index.html");
 });
 
 app.listen(PORT,()=>{
