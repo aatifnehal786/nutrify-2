@@ -248,7 +248,7 @@ app.get("/track/:userid/:date",verifiedToken,async (req,res)=>{
 const path = require("path");
 
 // Serve React static files
-app.use(express.static("./"));
+app.use(express.static("./dist"));
 
 // Fallback route to handle frontend paths
 app.get("*", (req, res) => {
